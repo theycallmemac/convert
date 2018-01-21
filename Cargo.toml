@@ -2,6 +2,12 @@
 name = "plutus"
 version = "0.1.0"
 authors = ["theycallmemac <james.mcdermott89@gmail.com>"]
+categories = ["command-line-interface","command-line-utilities","parsing","algorithms"]
+homepage = "https://github.com/theycallmemac/plutus"
+keywords = ["currency","conversion","cli"]
+license = "GPL-3.0"
+readme = "README.md"
+repository = "https://github.com/theycallmemac/plutus"
 
 [[bin]]
 name = "plutus"
