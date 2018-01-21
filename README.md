@@ -6,6 +6,6 @@ A command line tool written in rust which converts between currencies.
 
 ### Example Usage
 
-```plutus 180.50 EUR USD```
+```convert 180.50 EUR USD```
 
 The above command will convert EUR180.50 to USD using realtime information.
