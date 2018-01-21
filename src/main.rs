@@ -47,7 +47,7 @@ fn main() {
 fn run() -> Result<(), Error> {
     env_logger::init()?; 
     let matches = App::new("convert")
-        .version("0.1.0")
+        .version("0.2.0")
         .author("James McDermott <james.mcdermott89@gmail.com>")
         .about("A command line tool written in rust which converts between currencies.")
         .arg(Arg::with_name("list")
@@ -55,7 +55,7 @@ fn run() -> Result<(), Error> {
                  .long("list")
                  .value_name("list")
                  .takes_value(false)
-                 .help("displays all supported currencies"))
+                 .help("displays all supported currencies."))
         .arg(Arg::with_name("amount")
                  .required(false)
                  .takes_value(true)
@@ -80,11 +80,15 @@ fn run() -> Result<(), Error> {
             .exec()
             .unwrap();
         let body = std::str::from_utf8(response.get_body()).unwrap();
-        let json: Value = serde_json::from_str(body).unwrap();
-        let obj = json.as_object().and_then(|object| object.get("rates")).and_then(|links| links.as_object()).unwrap();
+        let json: Value = serde_json::from_str(body).unwrap_or_else(|e| {
+            panic!("Failed to parse json; error is {}", e);
+        });
+        let obj = json.as_object().and_then(|object| object.get("rates")).and_then(|links| links.as_object()).unwrap_or_else(|| {
+            panic!("Failed to get '_links' value from json");
+        });
         let mut count = 0;
         for (curr, val) in obj.iter() {
-            if (count == 4) {
+            if count == 4 {
                 println!("");
                 count = 0;
             }
@@ -105,7 +109,9 @@ fn run() -> Result<(), Error> {
             .exec()
             .unwrap();
         let body = std::str::from_utf8(response.get_body()).unwrap();
-        let data = json::parse(body).unwrap();
+        let data = json::parse(body).unwrap_or_else(|e| {
+            panic!("Failed to parse json; error is {}", e);
+        });
         let rate = data["rates"][desired].to_string().parse::<f32>()?;
         let conversion = Conversion::new(amount, rate);
         println!("{} {} is worth {:.2} {}", conversion.amount, base, conversion.amount * conversion.rate, desired);
