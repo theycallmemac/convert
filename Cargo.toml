@@ -2,6 +2,7 @@
 name = "plutus"
 version = "0.1.0"
 authors = ["theycallmemac <james.mcdermott89@gmail.com>"]
+description = "A command line tool written in rust which converts between currencies."
 categories = ["command-line-interface","command-line-utilities","parsing","algorithms"]
 homepage = "https://github.com/theycallmemac/plutus"
 keywords = ["currency","conversion","cli"]
